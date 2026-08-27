@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dulcería Artesanal - Bandejas Dulces</title>
+  <title>Bocatto - Dulcería Artesanal</title>
   <style>
     :root {
-      --primary: #e83e8c;
-      --bg: #fff5f8;
+      --primary: #5c2223;
+      --accent: #d4a373;
+      --bg: #fffbf7;
       --card-bg: #ffffff;
       --text: #333333;
     }
@@ -17,141 +18,190 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 0 0 30px 0;
     }
 
     header {
       text-align: center;
-      padding: 20px;
-      background-color: var(--primary);
-      color: white;
-      border-radius: 12px;
+      background-color: #ffffff;
+      padding: 30px 20px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       margin-bottom: 20px;
     }
 
+    .logo-header {
+      max-width: 280px;
+      height: auto;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+
+    header p {
+      color: var(--primary);
+      font-size: 1.1em;
+      margin: 5px 0 0;
+      font-weight: 500;
+    }
+
     .promo-banner {
-      background-color: #ffc107;
-      color: #000;
+      background-color: #f7d6a3;
+      color: #4a2105;
       text-align: center;
-      padding: 10px;
+      padding: 12px;
       font-weight: bold;
       border-radius: 8px;
-      margin-bottom: 25px;
+      margin: 0 auto 25px auto;
+      max-width: 1160px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0 20px;
     }
 
     .card {
       background: var(--card-bg);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 15px;
       text-align: center;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
     .card img {
       width: 100%;
-      height: 150px;
+      height: 200px;
       object-fit: cover;
       border-radius: 8px;
+      margin-bottom: 10px;
     }
 
     .card h3 {
       margin: 10px 0 5px;
+      font-size: 1.2em;
+      color: var(--primary);
     }
 
     .card .price {
       font-size: 1.1em;
-      color: var(--primary);
+      color: #8b4513;
       font-weight: bold;
+      margin-bottom: 10px;
     }
 
     .controls {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+      gap: 15px;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
     }
 
     button.btn-qty {
       background-color: var(--primary);
       color: white;
       border: none;
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-display {
+      font-size: 1.2em;
+      font-weight: bold;
+      min-width: 30px;
     }
 
     .cart-summary {
       max-width: 1000px;
       margin: 30px auto 0;
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .cart-summary h2 {
+      color: var(--primary);
+      margin-top: 0;
     }
 
     .total-price {
-      font-size: 1.4em;
+      font-size: 1.6em;
       font-weight: bold;
       color: var(--primary);
+      margin: 10px 0;
     }
 
     .btn-checkout {
       background-color: #25d366;
       color: white;
       border: none;
-      padding: 12px 20px;
+      padding: 15px 30px;
       border-radius: 8px;
-      font-size: 1em;
+      font-size: 1.1em;
       font-weight: bold;
       cursor: pointer;
       width: 100%;
+      max-width: 400px;
       margin-top: 15px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-checkout:hover {
+      background-color: #1ebe57;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Dulcería Artesanal</h1>
-    <p>Todas nuestras opciones vienen en bandejas</p>
+    <img src="bocatto_logo.jpg" alt="Bocatto" class="logo-header" onerror="this.onerror=null;this.src='https://via.placeholder.com/300x150?text=Bocatto';">
+    <p>Todas nuestras opciones vienen en deliciosas bandejas listas para disfrutar</p>
   </header>
 
   <div class="promo-banner">
-    ¡OFERTA! 1 Bandeja x $2.00 | Al mayor: Más de 5 bandejas a $1.50 c/u
+    ¡OFERTA ESPECIAL! 1 Bandeja x $2.00 | Al mayor: Más de 5 bandejas a $1.50 c/u
   </div>
 
   <div class="grid" id="product-grid"></div>
 
   <div class="cart-summary">
     <h2>Resumen del Pedido</h2>
-    <p>Total de bandejas: <span id="total-qty">0</span></p>
+    <p>Total de bandejas seleccionadas: <span id="total-qty">0</span></p>
     <p>Precio por unidad aplicado: <span id="unit-price">$2.00</span></p>
     <p class="total-price">Total a pagar: $<span id="total-amount">0.00</span></p>
-    <button class="btn-checkout" onclick="sendWhatsApp()">Pedir por WhatsApp</button>
+    <button class="btn-checkout" onclick="sendWhatsApp()">Confirmar y Pedir por WhatsApp</button>
   </div>
 
   <script>
     const products = [
-      { id: 1, name: "Bandeja de Polvorosas", img: "https://via.placeholder.com/200?text=Polvorosas" },
-      { id: 2, name: "Bandeja de Suspiros", img: "https://via.placeholder.com/200?text=Suspiros" },
-      { id: 3, name: "Bandeja de Galletas", img: "https://via.placeholder.com/200?text=Galletas" },
-      { id: 4, name: "Bandeja de Galletas de Chocolate", img: "https://via.placeholder.com/200?text=Galletas+Chocolate" },
-      { id: 5, name: "Bandeja de Caramelos", img: "https://via.placeholder.com/200?text=Caramelos" },
-      { id: 6, name: "Bandeja de Panes Dulces", img: "https://via.placeholder.com/200?text=Panes+Dulces" }
+      { id: 1, name: "Bandeja de Suspiros de Colores", img: "image_0.png" },
+      { id: 2, name: "Bandeja de Suspiros San Diego", img: "image_1.png" },
+      { id: 3, name: "Bandeja de Suspiros Variados", img: "image_2.png" },
+      { id: 4, name: "Bandeja de Galletas con Mermelada", img: "image_3.png" },
+      { id: 5, name: "Bandeja de Galletas Flor de Mermelada", img: "image_4.png" },
+      { id: 6, name: "Paquete / Bandeja de Caramelos de Café Gurmé", img: "caramelo-masticable-cafe-gurme-8gr.jpg" }
     ];
 
     const cart = {};
@@ -162,12 +212,12 @@
         cart[p.id] = 0;
         return `
           <div class="card">
-            <img src="${p.img}" alt="${p.name}">
+            <img src="${p.img}" alt="${p.name}" onerror="this.onerror=null;this.src='https://via.placeholder.com/250x200?text=Imagen+No+Encontrada';">
             <h3>${p.name}</h3>
             <div class="price">$2.00 / bandeja</div>
             <div class="controls">
               <button class="btn-qty" onclick="updateQty(${p.id}, -1)">-</button>
-              <span id="qty-${p.id}">0</span>
+              <span class="qty-display" id="qty-${p.id}">0</span>
               <button class="btn-qty" onclick="updateQty(${p.id}, 1)">+</button>
             </div>
           </div>
@@ -196,25 +246,27 @@
     function sendWhatsApp() {
       const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
       if (totalQty === 0) {
-        alert("Por favor, selecciona al menos una bandeja.");
+        alert("Por favor, selecciona al menos una bandeja para continuar.");
         return;
       }
 
-      let message = "Hola, me gustaría hacer el siguiente pedido:\n";
+      let message = "Hola *Bocatto*, me gustaría hacer el siguiente pedido:\n\n";
       products.forEach(p => {
         if (cart[p.id] > 0) {
-          message += `- ${p.name}: ${cart[p.id]} bandeja(s)\n`;
+          message += `* ${p.name}: ${cart[p.id]} bandeja(s)\n`;
         }
       });
 
       const pricePerUnit = totalQty > 5 ? 1.5 : 2.0;
       const totalAmount = totalQty * pricePerUnit;
 
-      message += `\nTotal bandejas: ${totalQty}`;
-      message += `\nPrecio unitario: $${pricePerUnit.toFixed(2)}`;
-      message += `\nTotal a pagar: $${totalAmount.toFixed(2)}`;
+      message += `\n------------------\n`;
+      message += `*Total bandejas:* ${totalQty}\n`;
+      message += `*Precio unitario aplicado:* $${pricePerUnit.toFixed(2)}\n`;
+      message += `*Total a pagar:* *$${totalAmount.toFixed(2)}*\n\n`;
+      message += "Quedo a la espera de su confirmación. ¡Gracias!";
 
-      const phone = "123456789"; // Reemplaza con tu número de teléfono
+      const phone = "123456789"; // Reemplaza con tu número de teléfono real
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
