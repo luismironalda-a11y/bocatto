@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dulcería Artesanal - Bandejas Dulces</title>
+  <style>
+    :root {
+      --primary: #e83e8c;
+      --bg: #fff5f8;
+      --card-bg: #ffffff;
+      --text: #333333;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .promo-banner {
+      background-color: #ffc107;
+      color: #000;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      border-radius: 8px;
+      margin-bottom: 25px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .card .price {
+      font-size: 1.1em;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button.btn-qty {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .cart-summary {
+      max-width: 1000px;
+      margin: 30px auto 0;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .total-price {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .btn-checkout {
+      background-color: #25d366;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Dulcería Artesanal</h1>
+    <p>Todas nuestras opciones vienen en bandejas</p>
+  </header>
+
+  <div class="promo-banner">
+    ¡OFERTA! 1 Bandeja x $2.00 | Al mayor: Más de 5 bandejas a $1.50 c/u
+  </div>
+
+  <div class="grid" id="product-grid"></div>
+
+  <div class="cart-summary">
+    <h2>Resumen del Pedido</h2>
+    <p>Total de bandejas: <span id="total-qty">0</span></p>
+    <p>Precio por unidad aplicado: <span id="unit-price">$2.00</span></p>
+    <p class="total-price">Total a pagar: $<span id="total-amount">0.00</span></p>
+    <button class="btn-checkout" onclick="sendWhatsApp()">Pedir por WhatsApp</button>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Bandeja de Polvorosas", img: "https://via.placeholder.com/200?text=Polvorosas" },
+      { id: 2, name: "Bandeja de Suspiros", img: "https://via.placeholder.com/200?text=Suspiros" },
+      { id: 3, name: "Bandeja de Galletas", img: "https://via.placeholder.com/200?text=Galletas" },
+      { id: 4, name: "Bandeja de Galletas de Chocolate", img: "https://via.placeholder.com/200?text=Galletas+Chocolate" },
+      { id: 5, name: "Bandeja de Caramelos", img: "https://via.placeholder.com/200?text=Caramelos" },
+      { id: 6, name: "Bandeja de Panes Dulces", img: "https://via.placeholder.com/200?text=Panes+Dulces" }
+    ];
+
+    const cart = {};
+
+    function renderProducts() {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = products.map(p => {
+        cart[p.id] = 0;
+        return `
+          <div class="card">
+            <img src="${p.img}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <div class="price">$2.00 / bandeja</div>
+            <div class="controls">
+              <button class="btn-qty" onclick="updateQty(${p.id}, -1)">-</button>
+              <span id="qty-${p.id}">0</span>
+              <button class="btn-qty" onclick="updateQty(${p.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateQty(id, change) {
+      if (cart[id] + change >= 0) {
+        cart[id] += change;
+        document.getElementById(`qty-${id}`).innerText = cart[id];
+        calculateTotal();
+      }
+    }
+
+    function calculateTotal() {
+      const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+      const pricePerUnit = totalQty > 5 ? 1.5 : 2.0;
+      const totalAmount = totalQty * pricePerUnit;
+
+      document.getElementById('total-qty').innerText = totalQty;
+      document.getElementById('unit-price').innerText = `$${pricePerUnit.toFixed(2)}`;
+      document.getElementById('total-amount').innerText = totalAmount.toFixed(2);
+    }
+
+    function sendWhatsApp() {
+      const totalQty = Object.values(cart).reduce((a, b) => a + b, 0);
+      if (totalQty === 0) {
+        alert("Por favor, selecciona al menos una bandeja.");
+        return;
+      }
+
+      let message = "Hola, me gustaría hacer el siguiente pedido:\n";
+      products.forEach(p => {
+        if (cart[p.id] > 0) {
+          message += `- ${p.name}: ${cart[p.id]} bandeja(s)\n`;
+        }
+      });
+
+      const pricePerUnit = totalQty > 5 ? 1.5 : 2.0;
+      const totalAmount = totalQty * pricePerUnit;
+
+      message += `\nTotal bandejas: ${totalQty}`;
+      message += `\nPrecio unitario: $${pricePerUnit.toFixed(2)}`;
+      message += `\nTotal a pagar: $${totalAmount.toFixed(2)}`;
+
+      const phone = "123456789"; // Reemplaza con tu número de teléfono
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
